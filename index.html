@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Password Generator</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+
+body {
+      background-image: url('./pic/1.jpg'); 
+      background-size: cover; 
+      background-repeat: no-repeat; 
+      background-attachment: fixed; 
+    }
+    
+    .container {
+      background-color: rgba(255, 255, 255, 0.8); 
+      border-radius: 10px;
+    }
+    #password {
+        transition: border-color 0.3s ease;
+    }
+    .weak {
+        background-color: #dc3545 !important;
+    }
+    .medium {
+    background-color: #ffc107 !important;
+    }
+    .strong {
+        background-color: #28a745 !important;
+    }
+</style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Password Generator</h1>
+    <div class="form-group">
+        <label for="length">Password Length:</label>
+        <input type="number" id="length" class="form-control" min="6" max="20" value="10">
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="uppercase">
+        <label class="form-check-label" for="uppercase">Include Uppercase Letters</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="numbers">
+        <label class="form-check-label" for="numbers">Include Numbers</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="special">
+        <label class="form-check-label" for="special">Include Special Characters</label>
+    </div>
+    <button class="btn btn-primary" onclick="generatePassword()">Generate Password</button>
+    <div class="form-group mt-3">
+        <input type="text" id="password" class="form-control" readonly>
+    </div>
+    <br><br>
+</div>
+<script>
+function generatePassword() {
+    var length = document.getElementById("length").value;
+    var includeUppercase = document.getElementById("uppercase").checked;
+    var includeNumbers = document.getElementById("numbers").checked;
+    var includeSpecial = document.getElementById("special").checked;
+    var charset = "abcdefghijklmnopqrstuvwxyz";
+    if (includeUppercase) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (includeNumbers) charset += "0123456789";
+    if (includeSpecial) charset += "!@#$%^&*()_+{}[];:<>,.?/~";
+    var password = "";
+    for (var i = 0; i < length; i++) {
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+    document.getElementById("password").value = password;
+    setPasswordStrength(password);
+}
+
+function setPasswordStrength(password) {
+    var strength;
+    if (password.length < 8) {
+        strength = "weak";
+    } else if (password.length < 12) {
+        strength = "medium";
+    } else {
+        strength = "strong";
+    }
+    document.getElementById("password").classList.remove("weak", "medium", "strong");
+    document.getElementById("password").classList.add(strength);
+}
+</script>
+</body>
+</html>
